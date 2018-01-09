@@ -1,0 +1,6 @@
+Repo contains code for popular data structure.
+
+code
+    |__ tree
+            |___ red_black_tree
+                                |---- non-recursive
