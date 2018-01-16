@@ -2,5 +2,9 @@ Repo contains code for popular data structure.
 
 code
     |__ tree
-            |___ red_black_tree
-                                |---- non-recursive
+    |       |___ red_black_tree
+    |                            |---- non-recursive
+    |__ linked list
+    |               |__ Single linked list
+    |               |
+    |               |__ Double linked list
