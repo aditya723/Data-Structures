@@ -102,20 +102,20 @@ void display(struct node *ptr)
 void search(struct node *ptr, int data)
 {
         int pos = 0;
+        struct node *tmp = ptr;
 
-        if (list_empty(ptr))
+        if (list_empty(tmp))
                 return;
 
-        while (ptr && ptr->info == data) {
-                ptr = ptr->next;
-                ++pos;
+        while (tmp && tmp->info != data) {
+                tmp = tmp->next;
+                pos++;
         }
 
-        if (ptr)
-                printf("Data not found\n");
-        else
+        if (tmp)
                 printf("Data found at %d position\n", pos);
-
+        else
+                printf("Data not found\n");
         return;
 }
 struct node *addatbeg(int data, struct node *ptr)

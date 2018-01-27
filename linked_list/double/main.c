@@ -23,8 +23,8 @@ int main(int argc, const char *argv[])
                                 "\t11. Delete at position\n"
                                 "\t12. Delete at end\n"
                                 "\t13. Delete at beg\n"
-                                "\t13. Reverse\n"
-                                "\t14. Search\n"
+                                "\t14. Reverse\n"
+                                "\t15. Search\n"
                                 "Please select any operation:");
                 scanf(" %d", &choice);
                 switch (choice) {
@@ -92,7 +92,7 @@ int main(int argc, const char *argv[])
                                 root = reverse(root);
                                 break;
                         case 15:
-                                printf("Enter data to be searched:\n");
+                                printf("Enter data to be searched:");
                                 scanf(" %d", &data);
                                 search(root, data);
                                 break;
