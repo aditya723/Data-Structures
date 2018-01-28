@@ -81,7 +81,7 @@ void display(struct node *ptr)
 {
         bool isempty = true;
 
-        printf("list is: ");
+        printf("List: ");
 
         while (ptr) {
                 if (isempty)
@@ -91,7 +91,7 @@ void display(struct node *ptr)
                 ptr = ptr->next;
         }
         if (isempty)
-                printf("empty");
+                printf("\b\b Empty...");
    
         printf("\n");
 }
@@ -103,15 +103,15 @@ void search(struct node *ptr, int data)
         if (list_empty(ptr))
                 return;
 
-        while (ptr && ptr->info == data) {
+        while (ptr && ptr->info != data) {
                 ptr = ptr->next;
-                ++pos;
+                pos++;
         }
 
         if (ptr)
-                printf("Data not found\n");
+                printf("Data found at index: %d\n", pos);
         else
-                printf("Data found at %d position\n", pos);
+                printf("Data not found\n");
 
         return;
 }
@@ -136,6 +136,10 @@ struct node *addbefore(int data, struct node *ptr)
 {
         struct node *tmp = ptr;
         struct node *tmp1, *prev = NULL;
+        int info;
+        
+        printf("Enter data: ");
+        scanf(" %d", &info);
 
         if (list_empty(ptr))
                 return ptr;
@@ -153,12 +157,12 @@ struct node *addbefore(int data, struct node *ptr)
         tmp1 = memory_allocator();
         if (NULL == prev) {
                 tmp1->next = ptr;
-                tmp1->info = data;
+                tmp1->info = info;
                 return tmp1;
         }
 
         prev->next = tmp1;
-        tmp1->info = data;
+        tmp1->info = info;
         tmp1->next = tmp;
         return ptr;
 }
@@ -167,6 +171,10 @@ struct node *addafter(int data, struct node *ptr)
 {
         struct node *tmp = ptr;
         struct node *tmp1, *prev = NULL;
+        int info;
+
+        printf("Enter data to be inserted: ");
+        scanf(" %d", &info);
 
         if (list_empty(ptr))
                 return ptr;
@@ -183,7 +191,7 @@ struct node *addafter(int data, struct node *ptr)
         }
         tmp1 = memory_allocator();
         tmp1->next = tmp->next;
-        tmp1->info = data;
+        tmp1->info = info;
         tmp->next = tmp1;
         return ptr;
 }
@@ -250,7 +258,7 @@ struct node *delete(int data, struct node *ptr)
                return ptr;
         }
 
-        prev->next->next = prev->next;
+        prev->next = tmp->next;
         memory_deallocator(tmp);
 
         return ptr;
@@ -259,60 +267,62 @@ struct node *delete(int data, struct node *ptr)
 struct node *deleteafter(int data, struct node *ptr)
 {
         struct node *tmp = ptr;
+        struct node *junk;
 
         if (list_empty(ptr))
                 return ptr;
  
-        while (tmp && tmp->info == data)
+        while (tmp && tmp->info != data)
                 tmp = tmp->next;
 
         if (tmp) {
                 if (tmp->next) {
+                        junk = tmp->next;
                         tmp->next = tmp->next->next;
-                        memory_deallocator(tmp->next);
+                        memory_deallocator(junk);
                 } else {
-                        printf("No after data in the list");
+                        printf("\nNo data  after : %d in list\n", data);
                 }
         } else {
-                printf("Invalid request: data provided was incorrect\n");
+                printf("Invalid request: data(%d) provided was incorrect\n", data);
         }
-        return tmp;
+        return ptr;
 }
 
 struct node *deletebefore(int data, struct node *ptr)
 {
         struct node *tmp = ptr;
         int count = 0, update = 0;
-        struct node *target = NULL;
-        struct node *prev_target = NULL;
+        struct node *cur = NULL;
+        struct node *next = NULL;
 
         if (list_empty(ptr))
                 return ptr;
  
-        while (tmp && tmp->info == data) {
+        while (tmp && tmp->info != data) {
                 if (update || ++count > 2) {
                         update = 1;
-                        prev_target = target;
+                        next = cur;
                 }
-                target = tmp;
+                cur = tmp;
                 tmp = tmp->next;
         }
 
-        if (!target) {
+        if (!cur) {
                 printf("No before node\n");
                 return ptr;
         }
-        if (!prev_target) {
-                memory_deallocator(target);
+        if (!next) {
+                memory_deallocator(cur);
                 return tmp;
         }
 
-        prev_target->next = tmp;
-        memory_deallocator(target);
+        next->next = tmp;
+        memory_deallocator(cur);
         return ptr;
 }
 
-struct node *deleteatpos(int data, struct node *ptr)
+struct node *deleteatpos(struct node *ptr)
 {
         struct node *tmp = ptr;
         struct node *prev = NULL;
@@ -321,27 +331,59 @@ struct node *deleteatpos(int data, struct node *ptr)
         if (list_empty(ptr))
                 return ptr;
 
-        printf("Enter position\n");
+        printf("Enter position: ");
         scanf("%d", &pos);
 
-        while (tmp && --pos) {
+        if (0 == pos)
+                return deleteatbeg(ptr);
+
+        while (tmp && pos--) {
                 prev = tmp;
                 tmp = tmp->next;
         }
  
-        if (0 != pos) {
+        if (-1 != pos) {
                 printf("List is smaller\n");
                 return ptr;
         }
 
-        if (prev) {
-                prev->next = tmp->next;
-                memory_deallocator(tmp);
-        } else {
-                memory_deallocator(tmp);
-        }
+        prev->next = tmp->next;
+        memory_deallocator(tmp);
 
         return ptr;
+}
+
+struct node *deleteatend(struct node *ptr)
+{
+        struct node *prev = NULL;
+        struct node *tmp = ptr;
+
+        if (list_empty(ptr))
+                return ptr;
+
+        while (tmp->next) {
+                prev = tmp;
+                tmp = tmp->next;
+        }
+
+        if (!prev)
+                ptr = tmp->next;
+        else
+                prev->next = NULL;
+
+        memory_deallocator(tmp);
+        return ptr;
+}
+
+struct node *deleteatbeg(struct node *ptr)
+{
+        struct node *prev = NULL;
+        struct node *tmp = ptr;
+
+        if (list_empty(ptr))
+                return ptr;
+
+        return ptr = ptr->next;
 }
 
 struct node *reverse(struct node *ptr)

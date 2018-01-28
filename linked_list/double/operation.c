@@ -84,7 +84,7 @@ void display(struct node *ptr)
 {
         bool isempty = true;
 
-        printf("list is: ");
+        printf("List: ");
 
         while (ptr) {
                 if (isempty)
@@ -94,7 +94,7 @@ void display(struct node *ptr)
                 ptr = ptr->next;
         }
         if (isempty)
-                printf("empty");
+                printf("\b\b Empty");
         
         printf("\n");
 }
@@ -113,7 +113,7 @@ void search(struct node *ptr, int data)
         }
 
         if (tmp)
-                printf("Data found at %d position\n", pos);
+                printf("Data found at index: %d\n", pos);
         else
                 printf("Data not found\n");
         return;
