@@ -58,7 +58,7 @@ int peek(struct stack *s)
         return s->array[s->top];
 }
 
-/* Algorithm to calculate stock span problem starts here */
+/* calculate stock span */
 void calculate_spane(int price[], int size)
 {
         struct stack s;
